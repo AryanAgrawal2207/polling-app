@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Polling App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #bcbbbb;
+            color: #444;
+            position: relative;
+        }
+
+        .container {
+            max-width: 800px; /* Fixed width */
+            padding: 50px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: auto;
+            margin-top: 30px; /* Adjust top margin to create space for the heading */
+        }
+
+        h1,
+        h2 {
+            color: #215286;
+            margin-bottom: 30px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: calc(33.33% - 20px);
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(to right, #007bff, #0056b3);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            background: linear-gradient(to right, #0056b3, #003a75);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .error {
+            background-color: #dc3545;
+        }
+
+        /* Position login and register links */
+        .login-register {
+            position: absolute;
+            top: 0px;
+            right: 10px;
+        }
+
+        .login-register .button {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="login-register">
+        <a href="{{ url_for('login') }}" class="button">Login</a>
+        <a href="{{ url_for('register') }}" class="button">Register</a>
+    </div>
+
+    <div class="container">
+        <h1>Poll App</h1>
+        <h3>Your vote matters.</h3>
+        {% if 'username' in session %}
+        <p>Welcome, {{ session['username'] }}! <a href="{{ url_for('logout') }}">Logout</a></p>
+        {% else %}
+        <div class="login-register">
+            <a href="{{ url_for('login') }}" class="button">Login</a>
+            <a href="{{ url_for('register') }}" class="button">Register</a>
+        </div>
+        {% endif %}
+        <h2>Polls:</h2>
+        <ul>
+            {% for poll in polls %}
+            <li class="card"><a href="{{ url_for('view_poll', poll_id=poll['_id']) }}">{{ poll['question'] }}</a></li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('create_poll') }}" class="button">Create Poll</a>
+    </div>
+</body>
+
+</html>
